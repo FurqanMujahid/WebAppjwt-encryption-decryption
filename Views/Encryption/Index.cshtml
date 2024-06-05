@@ -1,0 +1,124 @@
+﻿@{ ViewBag.Title = "Encryption Test"; }
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>@ViewBag.Title</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #3c3939;
+            color: #0af7e1; /* Neon blue text */
+        }
+
+        h2 {
+            align-content: center;
+            color: #0af7e1; /* Neon blue text */
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #0af7e1; /* Neon blue text */
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #0af7e1; /* Neon blue border */
+            border-radius: 4px;
+            background-color: #000; /* Black background */
+            color: #0af7e1; /* Neon blue text */
+        }
+
+            input[type="text"]:focus {
+                box-shadow: 0 0 5px #ff6eff; /* Neon pink glow */
+            }
+
+        button {
+            padding: 10px 20px;
+            background-color: #87ceeb; /* Neon skyblue background */
+            color: #fff; /* White text */
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+            button:hover {
+                background-color: #7ec0ee; /* Darker neon skyblue background */
+            }
+
+        p {
+            background-color: #000; /* Black background */
+            color: #0af7e1; /* Neon blue text */
+            padding: 10px;
+            border-radius: 4px;
+        }
+
+        .copy-button {
+            background-color: #555; /* Dark grey background */
+            color: #fff; /* White text */
+            border: none;
+            cursor: pointer;
+            padding: 5px 10px;
+            margin-left: 10px;
+        }
+
+            .copy-button:hover {
+                background-color: #777; /* Lighter grey background */
+            }
+    </style>
+    <script>
+        function copyToClipboard(elementId) {
+            var copyText = document.getElementById(elementId);
+            copyText.select();
+            document.execCommand("copy");
+        }
+    </script>
+</head>
+<body>
+
+    <h2>Encryption Test</h2>
+
+    <form action="/Encryption/EncryptData" method="post">
+        <label for="plainText">Enter text to encrypt:</label>
+        <input type="text" id="plainText" name="plainText">
+        <button type="submit">Encrypt</button>
+    </form>
+
+    @if (ViewBag.EncryptedData != null)
+    {
+<p>
+    Encrypted Data: <input type="text" value="@ViewBag.EncryptedData" id="encryptedData" readonly>
+    <button class="copy-button" onclick="copyToClipboard('encryptedData')">Copy Encrypted Data</button>
+</p>
+                <p>
+                    Public Key: <input type="text" value="@ViewBag.PublicKeyXml" id="publicKey" readonly>
+                    <button class="copy-button" onclick="copyToClipboard('publicKey')">Copy Public Key</button>
+                </p>}
+
+    <form action="/Encryption/DecryptData" method="post">
+        <label for="encryptedText">Enter encrypted text to decrypt:</label>
+        <input type="text" id="encryptedText" name="encryptedText">
+        <label for="publicKeyXml">Enter public key:</label>
+        <input type="text" id="privateKeyXml" name="privateKeyXml">
+        <button type="submit">Decrypt</button>
+    </form>
+
+    @if (ViewBag.DecryptedText != null)
+    {
+<p>Decrypted Text: @ViewBag.DecryptedText</p>}
+    @if (ViewBag.Error != null)
+    {
+<p style="color: red;">Error: @ViewBag.Error</p>}
+</body>
+</html>
